@@ -54,10 +54,6 @@
 #include "mainwindow.h"
 #include <QApplication>
 
-#include "GeohashTest.h"
-#include "MatrixTest.h"
-#include "SensorControllerTest.h"
-#include "CoordinatesTest.h"
 #include "SensorController.h"
 #include "MadgwickAHRS.h"
 #include "Coordinates.h"
@@ -89,7 +85,7 @@ int run<lt_tests>(int argc, char *argv[]) {
 }
 ///////////////////////////////////////////////////////
 
-//#define TESTMODE
+#define TESTMODE
 int main(int argc, char *argv[]) {
   try {
 #ifdef TESTMODE
