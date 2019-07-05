@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 #include <math.h>
-#include "CoordinatesTest.h"
 #include "Coordinates.h"
 
 

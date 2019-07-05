@@ -1,15 +1,6 @@
 #include "Geohash.h"
-#include "GeohashTest.h"
-
 #include <string.h>
 #include <stdint.h>
-#include <assert.h>
-#include <stddef.h>
-#include <math.h>
-#include <stdio.h>
-#include <inttypes.h>
-#include <iostream>
-#include <bitset>
 #include <gtest/gtest.h>
 
 typedef struct TestEncodeItem {
