@@ -13,7 +13,7 @@ enum LogMessageType {
   LMT_MAG_DATA,
   LMT_UNKNOWN
 };
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
 
 struct LogRawData {
   char *hdr;
@@ -26,6 +26,10 @@ struct LogRawData {
 struct GpsData {
   double lat, lon, alt;
   double speed, bearing, hdop;
+  /*
+    xVel = speed * cos(bearing);
+    yVel = speed * sin(bearing);
+  */
 };
 
 struct AccData {
@@ -47,7 +51,5 @@ struct SensorData {
   GyrData gyr;
   MagData mag;
 };
-
-
 
 #endif // SENSORCONTROLLER_H
