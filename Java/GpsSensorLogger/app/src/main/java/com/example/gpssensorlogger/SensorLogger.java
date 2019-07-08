@@ -76,8 +76,7 @@ public class SensorLogger implements SensorEventListener, IDataLogger {
             found = true;
             break;
         }
-        if (!found)
-            return;
+        if (!found) return;
         sw.Log(event);
     }
 
