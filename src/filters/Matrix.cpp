@@ -3,7 +3,8 @@
 #include <stddef.h>
 #include <stdarg.h>
 #include <stdio.h>
-#include "Matrix.h"
+#include "filters/Matrix.h"
+#include "commons/Commons.h"
 
 /* Swap rows r1 and r2 of a matrix.
    This is one of the three "elementary row operations". */
@@ -32,16 +33,16 @@ matrix_t *MatrixAlloc(uint32_t rows,
   uint32_t r, c;
   double *tmpL;
 
-  mtx = (matrix_t*) malloc(sizeof(matrix_t));
+  mtx = static_cast<matrix_t*>(malloc(sizeof(matrix_t)));
   assert(mtx);
 
   mtx->rows = rows;
   mtx->cols = cols;
-  mtx->data = (double**) malloc(sizeof(double*)*rows);
+  mtx->data = static_cast<double**>(malloc(sizeof(double*)*rows));
   assert(mtx->data);
 
   for (r = 0; r < rows; ++r) {
-    mtx->data[r] = (double*) malloc(sizeof(double)*cols);
+    mtx->data[r] = static_cast<double*>(malloc(sizeof(double)*cols));
     assert(mtx->data[r]);
     tmpL = mtx->data[r];
     for (c = 0; c < cols; ++c)

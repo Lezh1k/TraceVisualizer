@@ -6,27 +6,26 @@ INCLUDEPATH += include \
                tests/include
 
 HEADERS += \
-    include/Coordinates.h \
-    include/Commons.h \
-    include/Matrix.h \
-    include/Geohash.h \
-    include/mainwindow.h \
-    include/SensorController.h \
-    include/Kalman.h \
-    include/MadgwickAHRS.h \
-    include/GPSAccKalman.h \
-    include/MeanFilter.h
+    include/coordinates/Coordinates.h \
+    include/coordinates/Geohash.h \
+    include/commons/Commons.h \
+    include/commons/SensorController.h \
+    include/filters/Matrix.h \
+    include/filters/Kalman.h \
+    include/filters/MadgwickAHRS.h \
+    include/filters/GPSAccKalman.h \
+    include/mainwindow.h
 
-SOURCES += src/main.cpp \
-    src/Coordinates.cpp \
-    src/Matrix.cpp \
-    src/Geohash.cpp \
+SOURCES += \
+    src/coordinates/Coordinates.cpp \
+    src/coordinates/Geohash.cpp \
+    src/commons/SensorController.cpp \
+    src/filters/Matrix.cpp \
+    src/filters/Kalman.cpp \
+    src/filters/MadgwickAHRS.cpp \
+    src/filters/GPSAccKalman.cpp \
+    src/main.cpp \
     src/mainwindow.cpp \
-    src/Kalman.cpp \
-    src/MadgwickAHRS.cpp \
-    src/GPSAccKalman.cpp \
-    src/SensorController.cpp \
-    src/MeanFilter.cpp \
     tests/GeohashTest.cpp \
     tests/MatrixTest.cpp \
     tests/CoordinatesTest.cpp \

@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <assert.h>
-#include "Geohash.h"
+#include "coordinates/Geohash.h"
 
 static uint64_t interleave(uint64_t x, uint64_t y) {
   x = (x | (x << 16)) & 0x0000ffff0000ffff;

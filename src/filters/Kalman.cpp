@@ -1,11 +1,14 @@
-#include "Kalman.h"
-#include "Matrix.h"
+#include <exception>
+#include "filters/Kalman.h"
+#include "filters/Matrix.h"
 
-KalmanFilter_t *KalmanFilterCreate(int stateDimension,
-                                   int measureDimension,
-                                   int controlDimension)
+KalmanFilter_t *KalmanFilterCreate(uint32_t stateDimension,
+                                   uint32_t measureDimension,
+                                   uint32_t controlDimension)
 {
-  KalmanFilter_t *f = (KalmanFilter_t*) malloc(sizeof(KalmanFilter_t));
+  KalmanFilter_t *f = static_cast<KalmanFilter_t*>(malloc(sizeof(KalmanFilter_t)));
+  if (f == nullptr)
+    return f;
   f->F = MatrixAlloc(stateDimension, stateDimension);
   f->H = MatrixAlloc(measureDimension, stateDimension);
   f->Q = MatrixAlloc(stateDimension, stateDimension);

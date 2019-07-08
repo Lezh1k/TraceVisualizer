@@ -4,10 +4,10 @@
 #include <QRegExp>
 #include <math.h>
 
-#include "Coordinates.h"
-#include "Geohash.h"
-#include "Commons.h"
-#include "SensorController.h"
+#include "coordinates/Coordinates.h"
+#include "coordinates/Geohash.h"
+#include "commons/Commons.h"
+#include "commons/SensorController.h"
 
 #define EARTH_RADIUS (6371.0 * 1000.0) // meters
 #define ACTUAL_GRAVITY 9.80665
@@ -46,7 +46,7 @@ static double geoDistanceMeters(double lon1, double lat1,
   double sinU2 = tanU2 * cosU2;
 
   double sinl, cosl;
-  double sinSqs, sins=0.0, coss=0.0, sig=0.0, sina, cosSqa=0, cos2sigM=0, C;
+  double sinSqs, sins=0.0, coss=0.0, sig=0.0, sina, cosSqa=0.0, cos2sigM=0.0, C;
   double l = L, ll;
   int iterations = 1000;
 
@@ -54,14 +54,14 @@ static double geoDistanceMeters(double lon1, double lat1,
       sinl = sin(l);
       cosl = cos(l);
       sinSqs = (cosU2*sinl) * (cosU2*sinl) + (cosU1*sinU2-sinU1*cosU2*cosl) * (cosU1*sinU2-sinU1*cosU2*cosl);
-      if (sinSqs == 0.0f)
+      if (sinSqs == 0.0)
         break; // co-incident points
       sins = sqrt(sinSqs);
       coss = sinU1*sinU2 + cosU1*cosU2*cosl;
       sig = atan2(sins, coss);
       sina = cosU1 * cosU2 * sinl / sins;
       cosSqa = 1 - sina*sina;
-      cos2sigM = (cosSqa != 0.0f) ? (coss - 2*sinU1*sinU2/cosSqa) : 0; // equatorial line: cosSqα=0 (§6)
+      cos2sigM = (cosSqa != 0.0) ? (coss - 2*sinU1*sinU2/cosSqa) : 0.0; // equatorial line: cosSqα=0 (§6)
       C = flattening/16*cosSqa*(4+flattening*(4-3*cosSqa));
       ll = l;
       l = L + (1-C) * flattening * sina * (sig + C*sins*(cos2sigM+C*coss*(-1+2*cos2sigM*cos2sigM)));

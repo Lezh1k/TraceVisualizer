@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "Commons.h"
+#include "commons/Commons.h"
 
 typedef struct matrix {
   double **data;

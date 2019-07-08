@@ -48,17 +48,15 @@
 **
 ****************************************************************************/
 
-#include <assert.h>
+
 #include <stdlib.h>
+#include <QApplication>
+#include <gtest/gtest.h>
+
+#include "commons/SensorController.h"
+#include "coordinates/Coordinates.h"
 
 #include "mainwindow.h"
-#include <QApplication>
-
-#include "SensorController.h"
-#include "MadgwickAHRS.h"
-#include "Coordinates.h"
-
-#include <gtest/gtest.h>
 
 enum launch_type_t {
   lt_app = 0,
@@ -85,7 +83,7 @@ int run<lt_tests>(int argc, char *argv[]) {
 }
 ///////////////////////////////////////////////////////
 
-#define TESTMODE
+//#define TESTMODE
 int main(int argc, char *argv[]) {
   try {
 #ifdef TESTMODE

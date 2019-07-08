@@ -3,10 +3,9 @@
 #include <stdbool.h>
 #include <QFile>
 
-#include "SensorController.h"
-#include "GPSAccKalman.h"
-#include "Coordinates.h"
-#include "MeanFilter.h"
+#include "commons/SensorController.h"
+#include "filters/GPSAccKalman.h"
+#include "coordinates/Coordinates.h"
 
 static bool parseGpsData(const char *str, SensorData *sd);
 static bool parseAccData(const char *str, SensorData *sd);

@@ -1,8 +1,7 @@
 #include <assert.h>
-#include "GPSAccKalman.h"
-#include "Matrix.h"
-#include "Kalman.h"
-#include <QFile>
+#include "filters/GPSAccKalman.h"
+#include "filters/Matrix.h"
+#include "filters/Kalman.h"
 
 GPSAccKalmanFilter_t *GPSAccKalmanAlloc(double x,
                                         double y,
@@ -11,8 +10,10 @@ GPSAccKalmanFilter_t *GPSAccKalmanAlloc(double x,
                                         double accDev,
                                         double posDev,
                                         double timeStamp) {
-  GPSAccKalmanFilter_t *f = (GPSAccKalmanFilter_t*) malloc(sizeof(GPSAccKalmanFilter_t));
-  assert(f);
+  GPSAccKalmanFilter_t *f = static_cast<GPSAccKalmanFilter_t*>(malloc(sizeof(GPSAccKalmanFilter_t)));
+  if (!f)
+    return f;
+
   f->kf = KalmanFilterCreate(4, 2, 2);
   /*initialization*/
   f->predictTime = f->updateTime = timeStamp;
@@ -81,9 +82,6 @@ static void rebuildR(GPSAccKalmanFilter_t *f,
 
 static void rebuildQ(GPSAccKalmanFilter_t *f,
               double accDeviation) {
-//  MatrixSetIdentity(f->kf->Q);
-//  MatrixScale(f->kf->Q, accSigma * dt);
-
   double velDev = accDeviation * f->predictCount;
   double posDev = velDev * f->predictCount / 2;
   double covDev = velDev*posDev;
@@ -132,14 +130,17 @@ void GPSAccKalmanUpdate(GPSAccKalmanFilter_t *k,
 double GPSAccKalmanGetX(const GPSAccKalmanFilter_t *k) {
   return k->kf->Xk_k->data[0][0];
 }
+///////////////////////////////////////////////////////
 
 double GPSAccKalmanGetY(const GPSAccKalmanFilter_t *k) {
   return k->kf->Xk_k->data[1][0];
 }
+///////////////////////////////////////////////////////
 
 double GPSAccKalmanGetXVel(const GPSAccKalmanFilter_t *k) {
   return k->kf->Xk_k->data[2][0];
 }
+///////////////////////////////////////////////////////
 
 double GPSAccKalmanGetYVel(const GPSAccKalmanFilter_t *k) {
   return k->kf->Xk_k->data[3][0];

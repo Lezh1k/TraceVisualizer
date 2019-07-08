@@ -15,7 +15,7 @@
 //---------------------------------------------------------------------------------------------------
 // Header files
 
-#include "MadgwickAHRS.h"
+#include "filters/MadgwickAHRS.h"
 #include <stdint.h>
 #include <math.h>
 #include <assert.h>
@@ -39,7 +39,7 @@ static float invSqrt(float x);
 
 
 MadgwickFilter_t *MadgwickFilterAlloc(float beta, float sampleFreqHZ) {
-  MadgwickFilter_t *f = (MadgwickFilter_t*) malloc(sizeof(MadgwickFilter_t));
+  MadgwickFilter_t *f = static_cast<MadgwickFilter_t*>(malloc(sizeof(MadgwickFilter_t)));
   assert(f);
   f->beta = beta;
   f->q0 = 1.0f;
@@ -233,18 +233,10 @@ void MadgwickAHRSupdateIMU(MadgwickFilter_t *f,
 }
 
 //---------------------------------------------------------------------------------------------------
-// Fast inverse square-root
+// Fast inverse square-root DEPRECATED!
 // See: http://en.wikipedia.org/wiki/Fast_inverse_square_root
 
-float invSqrt(float x) {
-  //DOESN'T WORK ON 64-bit MACHINE
-//  float halfx = 0.5f * x;
-//  float y = x;
-//  int32_t i = *((int32_t*)&y);
-//  i = 0x5f3759df - (i>>1);
-//  y = *(int32_t*)&i;
-//  y = y * (1.5f - (halfx * y * y));
-//  return y;
+float invSqrt(float x) {  
   return 1.0f / sqrt(x);
 }
 

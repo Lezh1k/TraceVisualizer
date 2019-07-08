@@ -1,6 +1,7 @@
 #ifndef KALMAN_H
 #define KALMAN_H
 
+#include <stdint.h>
 typedef struct matrix matrix_t;
 
 typedef struct KalmanFilter {
@@ -33,9 +34,9 @@ typedef struct KalmanFilter {
 
 } KalmanFilter_t;
 
-KalmanFilter_t *KalmanFilterCreate(int stateDimension,
-                                   int measureDimension,
-                                   int controlDimension);
+KalmanFilter_t *KalmanFilterCreate(uint32_t stateDimension,
+                                   uint32_t measureDimension,
+                                   uint32_t controlDimension);
 void KalmanFilterFree(KalmanFilter_t *k);
 
 void KalmanFilterPredict(KalmanFilter_t *k);

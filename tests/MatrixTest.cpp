@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <gtest/gtest.h>
-#include "Matrix.h"
+#include "filters/Matrix.h"
 
 TEST(matrix, matrixSet) {
   matrix_t *m1, *m2;

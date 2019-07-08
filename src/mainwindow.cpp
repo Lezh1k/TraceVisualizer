@@ -1,14 +1,13 @@
 #include "include/mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QMessageBox>
-#include <QFile>
 #include <math.h>
 #include <limits>
+#include <QMessageBox>
 #include <QFileDialog>
 
-#include "Coordinates.h"
-#include "Geohash.h"
-#include "SensorController.h"
+#include "coordinates/Coordinates.h"
+#include "coordinates/Geohash.h"
+#include "commons/SensorController.h"
 
 static const QString g_mapDiv = "megamap";
 static const QString g_baseHtml = "<!DOCTYPE html>\n"
