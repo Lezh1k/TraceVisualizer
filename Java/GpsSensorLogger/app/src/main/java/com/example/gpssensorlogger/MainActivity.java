@@ -120,6 +120,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        //!todo implement some protection
+        //!todo implement some protection from missing permission errors
     }
 }
