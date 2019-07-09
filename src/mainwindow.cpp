@@ -1,7 +1,5 @@
 #include "include/mainwindow.h"
 #include "ui_mainwindow.h"
-#include <math.h>
-#include <limits>
 #include <QMessageBox>
 #include <QFileDialog>
 
@@ -119,3 +117,4 @@ void MainWindow::initMap() {
   QString html = g_baseHtml.arg(g_mapDiv).arg(allCoordsStr).arg(p.Latitude).arg(p.Longitude);
   m_page->setHtml(html);
 }
+///////////////////////////////////////////////////////

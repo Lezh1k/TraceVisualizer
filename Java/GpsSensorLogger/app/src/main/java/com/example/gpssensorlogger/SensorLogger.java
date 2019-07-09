@@ -1,5 +1,6 @@
 package com.example.gpssensorlogger;
 
+import android.annotation.SuppressLint;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -21,9 +22,14 @@ public class SensorLogger implements SensorEventListener, IDataLogger {
         public SensorAccWrapper(Integer type, Sensor sensor) {
             super(type, sensor);
         }
+
+        @SuppressLint("DefaultLocale")
         @Override
         public void Log(SensorEvent event) {
-            //todo %lf ACC : x=%lf, y=%lf, z=%lf
+            String logStr = String.format("%d%d ACC : x=%f, y=%f, z=%f",
+                    LogMessageType.LMT_ACC_DATA.ordinal(), TimeController.time(), event.values[0],
+                    event.values[1], event.values[2]);
+            LogController.Instance().Log(logStr); //%lf ACC : x=%lf, y=%lf, z=%lf
         }
     }
 
@@ -31,9 +37,13 @@ public class SensorLogger implements SensorEventListener, IDataLogger {
         public SensorGyrWrapper(Integer type, Sensor sensor) {
             super(type, sensor);
         }
+        @SuppressLint("DefaultLocale")
         @Override
         public void Log(SensorEvent event) {
-            //todo %lf GYR : x=%lf, y=%lf, z=%lf
+            String logStr = String.format("%d%d GYR : x=%f, y=%f, z=%f",
+                    LogMessageType.LMT_GYR_DATA.ordinal(), TimeController.time(),
+                    event.values[0], event.values[1], event.values[2]);
+            LogController.Instance().Log(logStr); //%lf GYR : x=%lf, y=%lf, z=%lf
         }
     }
 
@@ -41,9 +51,13 @@ public class SensorLogger implements SensorEventListener, IDataLogger {
         public SensorMagWrapper(Integer type, Sensor sensor) {
             super(type, sensor);
         }
+        @SuppressLint("DefaultLocale")
         @Override
         public void Log(SensorEvent event) {
-            //todo %lf MAG : x=%lf, y=%lf, z=%lf
+            String logStr = String.format("%d%d MAG : x=%f, y=%f, z=%f",
+                    LogMessageType.LMT_MAG_DATA.ordinal(), TimeController.time(),
+                    event.values[0], event.values[1], event.values[2]);
+            LogController.Instance().Log(logStr); //%lf MAG : x=%lf, y=%lf, z=%lf
         }
     }
     ////////////////////////////////////////////////////////////////////////
@@ -59,6 +73,7 @@ public class SensorLogger implements SensorEventListener, IDataLogger {
 
     public SensorLogger(SensorManager sensorManager) {
         this.m_sensorManager = sensorManager;
+        m_sensorsEnabled = true;
         for (SensorWrapper sw : m_wrappers) {
             sw.sensor = m_sensorManager.getDefaultSensor(sw.type);
             m_sensorsEnabled &= sw.sensor != null;
@@ -77,6 +92,7 @@ public class SensorLogger implements SensorEventListener, IDataLogger {
             break;
         }
         if (!found) return;
+
         sw.Log(event);
     }
 
@@ -90,7 +106,7 @@ public class SensorLogger implements SensorEventListener, IDataLogger {
         boolean result = m_sensorsEnabled;
         for (SensorWrapper sw : m_wrappers) {
             m_sensorManager.unregisterListener(this, sw.sensor);
-            result &= !m_sensorManager.registerListener(this, sw.sensor, SensorManager.SENSOR_DELAY_GAME);
+            result &= m_sensorManager.registerListener(this, sw.sensor, SensorManager.SENSOR_DELAY_GAME);
         }
         return result;
     }
