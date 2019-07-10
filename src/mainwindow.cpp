@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QPushButton>
 
 #include "coordinates/Coordinates.h"
 #include "coordinates/Geohash.h"
@@ -48,6 +49,8 @@ MainWindow::MainWindow(QWidget *parent) :
   m_page = ui->m_webView->page();
   connect(m_page, &QWebEnginePage::featurePermissionRequested,
           this, &MainWindow::pageFeaturePermissionRequested);
+
+  connect(ui->m_btnRefresh, &QPushButton::pressed, this, &MainWindow::btnRefresh_pressed);
   initMap(); //!todo move to some refresh slot
 }
 ///////////////////////////////////////////////////////
@@ -77,6 +80,10 @@ void MainWindow::exportTraceToHtmlFile() {
   if (fs.isEmpty())
     return;
   m_page->save(fs);
+}
+
+void MainWindow::btnRefresh_pressed() {
+  //!todo read from file.
 }
 ///////////////////////////////////////////////////////
 

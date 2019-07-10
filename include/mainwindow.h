@@ -27,6 +27,8 @@ private:
 private slots:
   void pageFeaturePermissionRequested(const QUrl &securityOrigin, QWebEnginePage::Feature feature);
   void exportTraceToHtmlFile();
+
+  void btnRefresh_pressed();
 };
 
 #endif // MAINWINDOW_H

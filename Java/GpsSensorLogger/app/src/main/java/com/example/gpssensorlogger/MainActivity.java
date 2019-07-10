@@ -101,13 +101,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         PermissionContainer[] containers = {
-                new PermissionContainer(Manifest.permission.ACCESS_FINE_LOCATION,
+                new PermissionContainer(Manifest.permission.ACCESS_COARSE_LOCATION,
                         MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION),
                 new PermissionContainer(Manifest.permission.ACCESS_FINE_LOCATION,
                         MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION),
-                new PermissionContainer(Manifest.permission.ACCESS_FINE_LOCATION,
+                new PermissionContainer(Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE),
-                new PermissionContainer(Manifest.permission.ACCESS_FINE_LOCATION,
+                new PermissionContainer(Manifest.permission.READ_EXTERNAL_STORAGE,
                         MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE),
         };
 
