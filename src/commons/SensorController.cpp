@@ -100,6 +100,11 @@ static const char *LOGTAG = "0|";
 }
 ///////////////////////////////////////////////////////
 
+void SensorController::reset() {
+  m_data.erase(m_data.begin(), m_data.end());
+}
+///////////////////////////////////////////////////////
+
 const SensorController::storage_bytime_t &SensorController::storageByTime() const {
   return m_data.get<SensorData::ByTime>();
 }

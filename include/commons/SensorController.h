@@ -60,6 +60,14 @@ struct SensorData {
       return l.timestamp < r.timestamp;
     }
   };
+
+  struct LessByTypePredicate {
+    bool operator()(const SensorData& l, const SensorData& r) const noexcept {
+      if (l.type == r.type)
+        return l.timestamp < r.timestamp;
+      return l.type < r.type;
+    }
+  };
 };
 
 inline bool operator==(const SensorData &l, const SensorData &r) {
@@ -68,23 +76,15 @@ inline bool operator==(const SensorData &l, const SensorData &r) {
       l.type == r.type);
 }
 inline bool operator!=(const SensorData &l, const SensorData &r) {return !(l == r);}
-inline bool operator<(const SensorData &l, const SensorData &r) {
-  if (l.type == r.type)
-    return l.timestamp < r.timestamp;
-  return l.type < r.type;
-}
-inline bool operator>(const SensorData &l, const SensorData &r) {return r < l;}
-inline bool operator<=(const SensorData &l, const SensorData &r) {return !(l > r);}
-inline bool operator>=(const SensorData &l, const SensorData &r) {return !(l < r);}
+
 
 class SensorController {
 public:
-
 #define bmi boost::multi_index
   using storage_t = boost::multi_index_container<SensorData,
     bmi::indexed_by<
-      bmi::ordered_unique<
-        bmi::tag<SensorData::ByType>, bmi::identity<SensorData>
+      bmi::ordered_non_unique<
+        bmi::tag<SensorData::ByType>, bmi::identity<SensorData>, SensorData::LessByTypePredicate
       >,
       bmi::ordered_non_unique<
         bmi::tag<SensorData::ByTime>, bmi::identity<SensorData>, SensorData::LessByTimestampPredicate
@@ -102,6 +102,8 @@ public:
   ~SensorController() = default;
 
   bool addLine(char *str);
+  void reset();
+
   const storage_bytime_t &storageByTime() const;
   const storage_bytype_t &storageByType() const;
 private:
