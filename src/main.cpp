@@ -83,7 +83,7 @@ int run<lt_tests>(int argc, char *argv[]) {
 }
 ///////////////////////////////////////////////////////
 
-//#define TESTMODE
+#define TESTMODE
 int main(int argc, char *argv[]) {
   try {
 #ifdef TESTMODE

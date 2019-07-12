@@ -26,10 +26,10 @@ public class SensorLogger implements SensorEventListener, IDataLogger {
         @SuppressLint("DefaultLocale")
         @Override
         public void Log(SensorEvent event) {
-            String logStr = String.format("%d%d ACC : x=%f, y=%f, z=%f",
+            String logStr = String.format("%d%d ACC : x=%f y=%f z=%f",
                     LogMessageType.LMT_ACC_DATA.ordinal(), TimeController.time(), event.values[0],
                     event.values[1], event.values[2]);
-            LogController.Instance().Log(logStr); //%lf ACC : x=%lf, y=%lf, z=%lf
+            LogController.Instance().Log(logStr); //%lf ACC : x=%lf y=%lf z=%lf
         }
     }
 
@@ -40,10 +40,10 @@ public class SensorLogger implements SensorEventListener, IDataLogger {
         @SuppressLint("DefaultLocale")
         @Override
         public void Log(SensorEvent event) {
-            String logStr = String.format("%d%d GYR : x=%f, y=%f, z=%f",
+            String logStr = String.format("%d%d GYR : x=%f y=%f z=%f",
                     LogMessageType.LMT_GYR_DATA.ordinal(), TimeController.time(),
                     event.values[0], event.values[1], event.values[2]);
-            LogController.Instance().Log(logStr); //%lf GYR : x=%lf, y=%lf, z=%lf
+            LogController.Instance().Log(logStr); //%lf GYR : x=%lf y=%lf z=%lf
         }
     }
 
@@ -54,10 +54,10 @@ public class SensorLogger implements SensorEventListener, IDataLogger {
         @SuppressLint("DefaultLocale")
         @Override
         public void Log(SensorEvent event) {
-            String logStr = String.format("%d%d MAG : x=%f, y=%f, z=%f",
+            String logStr = String.format("%d%d MAG : x=%f y=%f z=%f",
                     LogMessageType.LMT_MAG_DATA.ordinal(), TimeController.time(),
                     event.values[0], event.values[1], event.values[2]);
-            LogController.Instance().Log(logStr); //%lf MAG : x=%lf, y=%lf, z=%lf
+            LogController.Instance().Log(logStr); //%lf MAG : x=%lf y=%lf z=%lf
         }
     }
     ////////////////////////////////////////////////////////////////////////

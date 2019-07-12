@@ -14,7 +14,7 @@ static const QString g_baseHtml = "<!DOCTYPE html>\n"
                                   "<head>\n"
                                   "  <style>\n"
                                   "     #%1 {\n"
-                                  "      height: 800px;\n"
+                                  "      height: 600px;\n"
                                   "      width: 100%;\n"
                                   "     }\n"
                                   "  </style>\n"
@@ -51,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
           this, &MainWindow::pageFeaturePermissionRequested);
 
   connect(ui->m_btnRefresh, &QPushButton::pressed, this, &MainWindow::btnRefresh_pressed);
-  initMap(); //!todo move to some refresh slot
+  connect(ui->m_btnSave, &QPushButton::pressed, this, &MainWindow::btnSave_pressed);
 }
 ///////////////////////////////////////////////////////
 
@@ -81,9 +81,24 @@ void MainWindow::exportTraceToHtmlFile() {
     return;
   m_page->save(fs);
 }
+///////////////////////////////////////////////////////
 
 void MainWindow::btnRefresh_pressed() {
   //!todo read from file.
+  std::vector<geopoint_t> lstCoords;
+  qDebug() << "Src distance : " << CoordCaclulateDistance(lstCoords);
+  //!todo filter with geohash JUST FOR DISPLAY! so need to set big precision.
+  QString srcCoordsStr = jsCoordsString(lstCoords, "src", "#FF0000");
+  QString allCoordsStr = srcCoordsStr;
+  geopoint_t p(42.87336, 74.61873);
+  if (!lstCoords.empty()) p = lstCoords[0];
+  QString html = g_baseHtml.arg(g_mapDiv).arg(allCoordsStr).arg(p.Latitude).arg(p.Longitude);
+  m_page->setHtml(html);
+}
+///////////////////////////////////////////////////////
+
+void MainWindow::btnSave_pressed() {
+  exportTraceToHtmlFile();
 }
 ///////////////////////////////////////////////////////
 
@@ -110,18 +125,5 @@ QString jsCoordsString(const std::vector<geopoint_t>& lst,
                        "});\n").arg(prefix).arg(color);
   coordsStr += "}\n";
   return coordsStr;
-}
-///////////////////////////////////////////////////////
-
-void MainWindow::initMap() {
-  std::vector<geopoint_t> lstCoords;
-  qDebug() << "Src distance : " << CoordCaclulateDistance(lstCoords);
-  //!todo filter with geohash JUST FOR DISPLAY! so need to set big precision.
-  QString srcCoordsStr = jsCoordsString(lstCoords, "src", "#FF0000");
-  QString allCoordsStr = srcCoordsStr;
-  geopoint_t p(42.87336, 74.61873);
-  if (!lstCoords.empty()) p = lstCoords[0];
-  QString html = g_baseHtml.arg(g_mapDiv).arg(allCoordsStr).arg(p.Latitude).arg(p.Longitude);
-  m_page->setHtml(html);
 }
 ///////////////////////////////////////////////////////

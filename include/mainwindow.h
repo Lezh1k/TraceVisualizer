@@ -22,13 +22,12 @@ private:
   Ui::MainWindow *ui;
   QWebEnginePage *m_page;
 
-  void initMap();
-
 private slots:
   void pageFeaturePermissionRequested(const QUrl &securityOrigin, QWebEnginePage::Feature feature);
   void exportTraceToHtmlFile();
 
   void btnRefresh_pressed();
+  void btnSave_pressed();
 };
 
 #endif // MAINWINDOW_H

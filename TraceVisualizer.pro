@@ -29,8 +29,10 @@ SOURCES += \
     tests/GeohashTest.cpp \
     tests/MatrixTest.cpp \
     tests/CoordinatesTest.cpp \
+    tests/SensorControllerTest.cpp
 
 LIBS += -lgtest
+#LIBS += -ltcmalloc
 
 FORMS += \
     forms/mainwindow.ui

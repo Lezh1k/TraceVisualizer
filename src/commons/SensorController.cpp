@@ -11,6 +11,7 @@ static bool parseGpsData(const char *str, SensorData *sd);
 static bool parseAccData(const char *str, SensorData *sd);
 static bool parseGyrData(const char *str, SensorData *sd);
 static bool parseMagData(const char *str, SensorData *sd);
+static SensorDataType parseDataString(const char *str, SensorData *sd);
 
 //don't change order here. it's related to LogMessageType
 static bool (*parsers[])(const char*, SensorData*) = {
@@ -21,21 +22,21 @@ static bool (*parsers[])(const char*, SensorData*) = {
 };
 
 bool parseGpsData(const char *str, SensorData *sd) {
-  int tt = sscanf(str, "%lf GPS : pos lat=%lf, lon=%lf, alt=%lf, hdop=%lf, speed=%lf, bearing=%lf",
+  int tt = sscanf(str, "%lf GPS : pos lat=%lf lon=%lf alt=%lf hdop=%lf speed=%lf bearing=%lf",
                   &sd->timestamp,
-                  &sd->gps.lat,
-                  &sd->gps.lon,
-                  &sd->gps.alt,
-                  &sd->gps.hdop,
-                  &sd->gps.speed,
-                  &sd->gps.bearing);
+                  &sd->data.gps.lat,
+                  &sd->data.gps.lon,
+                  &sd->data.gps.alt,
+                  &sd->data.gps.hdop,
+                  &sd->data.gps.speed,
+                  &sd->data.gps.bearing);
   return tt == 7;
 }
 ///////////////////////////////////////////////////////
 
 bool parseAccData(const char *str, SensorData *sd) {
-  AccData *acc = &sd->acc;
-  int tt = sscanf(str, "%lf ACC : x=%lf, y=%lf, z=%lf",
+  AccData *acc = &sd->data.acc;
+  int tt = sscanf(str, "%lf ACC : x=%lf y=%lf z=%lf",
                   &sd->timestamp,
                   &acc->x,
                   &acc->y,
@@ -45,8 +46,8 @@ bool parseAccData(const char *str, SensorData *sd) {
 ///////////////////////////////////////////////////////
 
 bool parseGyrData(const char *str, SensorData *sd) {
-  GyrData *gyr = &sd->gyr;
-  int tt = sscanf(str, "%lf GYR : x=%lf, y=%lf, z=%lf",
+  GyrData *gyr = &sd->data.gyr;
+  int tt = sscanf(str, "%lf GYR : x=%lf y=%lf z=%lf",
                   &sd->timestamp,
                   &gyr->x,
                   &gyr->y,
@@ -56,8 +57,8 @@ bool parseGyrData(const char *str, SensorData *sd) {
 ///////////////////////////////////////////////////////
 
 bool parseMagData(const char *str, SensorData *sd) {
-  MagData *mag = &sd->mag;
-  int tt = sscanf(str, "%lf MAG : x=%lf, y=%lf, z=%lf",
+  MagData *mag = &sd->data.mag;
+  int tt = sscanf(str, "%lf MAG : x=%lf y=%lf z=%lf",
                   &sd->timestamp,
                   &mag->x,
                   &mag->y,
@@ -66,12 +67,32 @@ bool parseMagData(const char *str, SensorData *sd) {
 }
 ///////////////////////////////////////////////////////
 
-LogMessageType
-SensorControllerParseDataString(const char *str, SensorData *sd) {
+SensorDataType parseDataString(const char *str, SensorData *sd) {
   int pi = -1;  
   pi = str[0] - '0';
-  if (pi < 0 || pi >= LMT_UNKNOWN)
-    return LMT_UNKNOWN;
-  return parsers[pi](str+1, sd) ? static_cast<LogMessageType>(pi) : LMT_UNKNOWN;
+  if (pi < 0 || pi >= SDT_UNKNOWN)
+    return SDT_UNKNOWN;
+  return parsers[pi](str+1, sd) ? static_cast<SensorDataType>(pi) : SDT_UNKNOWN;
 }
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
+
+const char *SensorController::LOGTAG = "0|"; // see XLOG config in java application
+
+bool SensorController::addLine(char *str) {
+  char *sub = strstr(str, LOGTAG);
+  if (sub == nullptr)
+    return false;
+  sub += 2; //magic. len of LOGTAG
+  for (char *tmp = sub; *tmp; ++tmp) {
+    if (*tmp != ',')
+      continue;
+
+    *tmp = '.';
+  }
+
+  SensorData sd;
+  SensorDataType sdt = parseDataString(sub, &sd);
+  return sdt != SDT_UNKNOWN;
+}
