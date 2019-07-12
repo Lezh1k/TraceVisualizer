@@ -27,7 +27,7 @@ public class GPSLogger implements LocationListener, IDataLogger {
         long timestamp = TimeController.time();
 
         @SuppressLint("DefaultLocale")
-        String logStr = String.format("%d%d GPS : lat=%f, lon=%f, alt=%f, hdop=%f, speed=%f, bearing=%f",
+        String logStr = String.format("%d%d GPS : lat=%f lon=%f alt=%f hdop=%f speed=%f bearing=%f",
                         LogMessageType.LMT_GPS_DATA.ordinal(), timestamp, lat, lon, alt, hdop, speed, bearing);
         LogController.Instance().Log(logStr);
     }
