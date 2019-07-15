@@ -4,6 +4,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <functional>
 
 #ifdef __cplusplus
 #define restrict __restrict__
@@ -50,5 +51,12 @@ inline int RandomBetween2Vals(int low, int hi) {
 inline double LowPassFilter(double prev, double measured, double alpha) {
   return prev + alpha * (measured - prev);
 }
+
+struct Defer {
+  std::function<void()> finalize;
+  Defer() = delete;
+  Defer(std::function<void()> &&fin) : finalize(fin) {}
+  ~Defer() { finalize(); }
+};
 
 #endif // COMMONS_H

@@ -53,7 +53,7 @@
 #include <QApplication>
 #include <gtest/gtest.h>
 
-#include "commons/SensorController.h"
+#include "commons/SensorDataParser.h"
 #include "coordinates/Coordinates.h"
 
 #include "mainwindow.h"

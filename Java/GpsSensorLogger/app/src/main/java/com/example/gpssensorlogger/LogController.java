@@ -21,7 +21,7 @@ public class LogController {
     private LogController() {
         LogConfiguration config = new LogConfiguration.Builder()
                 .logLevel(LogLevel.ALL)
-                .tag("0")
+                .tag("TRACETAG")
                 .build();
 
         List<Printer> lstPrinters = new ArrayList<Printer>();

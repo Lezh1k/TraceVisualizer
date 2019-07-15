@@ -4,7 +4,7 @@
 #include <inttypes.h>
 #include <string.h>
 
-#include "commons/SensorController.h"
+#include "commons/SensorDataParser.h"
 #include "filters/GPSAccKalman.h"
 #include "coordinates/Coordinates.h"
 
@@ -12,7 +12,7 @@ static bool parseGpsData(const char *str, SensorData *sd);
 static bool parseAccData(const char *str, SensorData *sd);
 static bool parseGyrData(const char *str, SensorData *sd);
 static bool parseMagData(const char *str, SensorData *sd);
-static SensorDataType parseDataString(const char *str, SensorData *sd);
+
 
 //don't change order here. it's related to LogMessageType
 static bool (*parsers[])(const char*, SensorData*) = {
@@ -68,49 +68,11 @@ bool parseMagData(const char *str, SensorData *sd) {
 }
 ///////////////////////////////////////////////////////
 
-SensorDataType parseDataString(const char *str, SensorData *sd) {
-  int pi = -1;  
+SensorDataType SensorDataParser::parseDataString(const char *str, SensorData *sd) {
+  int pi = -1;
   pi = str[0] - '0';
   if (pi < 0 || pi >= SDT_UNKNOWN)
     return SDT_UNKNOWN;
   return parsers[pi](str+1, sd) ? static_cast<SensorDataType>(pi) : SDT_UNKNOWN;
-}
-///////////////////////////////////////////////////////
-///////////////////////////////////////////////////////
-///////////////////////////////////////////////////////
-
-bool SensorController::addLine(char *str) {
-static const int TAGLEN = 2;
-static const char *LOGTAG = "0|";
-  char *sub = strstr(str, LOGTAG);
-  if (sub == nullptr)
-    return false;
-  sub += TAGLEN;
-  for (char *tmp = sub; *tmp; ++tmp) {
-    if (*tmp != ',')
-      continue;
-    *tmp = '.';
-  }
-  SensorData sd;
-  sd.type = parseDataString(sub, &sd);
-  if (sd.type == SDT_UNKNOWN)
-    return false;
-  auto ir = m_data.insert(sd);
-  return ir.second;
-}
-///////////////////////////////////////////////////////
-
-void SensorController::reset() {
-  m_data.erase(m_data.begin(), m_data.end());
-}
-///////////////////////////////////////////////////////
-
-const SensorController::storage_bytime_t &SensorController::storageByTime() const {
-  return m_data.get<SensorData::ByTime>();
-}
-///////////////////////////////////////////////////////
-
-const SensorController::storage_bytype_t &SensorController::storageByType() const {
-  return m_data.get<SensorData::ByType>();
 }
 ///////////////////////////////////////////////////////

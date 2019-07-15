@@ -7,7 +7,7 @@
 #include "coordinates/Coordinates.h"
 #include "coordinates/Geohash.h"
 #include "commons/Commons.h"
-#include "commons/SensorController.h"
+#include "commons/SensorDataParser.h"
 
 #define EARTH_RADIUS (6371.0 * 1000.0) // meters
 #define ACTUAL_GRAVITY 9.80665

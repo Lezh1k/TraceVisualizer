@@ -6,10 +6,11 @@ INCLUDEPATH += include \
                tests/include
 
 HEADERS += \
+    include/commons/SensorDataController.h \
+    include/commons/SensorDataParser.h \
     include/coordinates/Coordinates.h \
     include/coordinates/Geohash.h \
     include/commons/Commons.h \
-    include/commons/SensorController.h \
     include/filters/Matrix.h \
     include/filters/Kalman.h \
     include/filters/MadgwickAHRS.h \
@@ -17,9 +18,10 @@ HEADERS += \
     include/mainwindow.h
 
 SOURCES += \
+    src/commons/SensorDataController.cpp \
+    src/commons/SensorDataParser.cpp \
     src/coordinates/Coordinates.cpp \
     src/coordinates/Geohash.cpp \
-    src/commons/SensorController.cpp \
     src/filters/Matrix.cpp \
     src/filters/Kalman.cpp \
     src/filters/MadgwickAHRS.cpp \
@@ -29,7 +31,8 @@ SOURCES += \
     tests/GeohashTest.cpp \
     tests/MatrixTest.cpp \
     tests/CoordinatesTest.cpp \
-    tests/SensorControllerTest.cpp
+    tests/SensorDataControllerTest.cpp \
+    tests/SensorDataParserTest.cpp
 
 LIBS += -lgtest
 #LIBS += -ltcmalloc

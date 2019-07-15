@@ -6,7 +6,7 @@
 
 #include "coordinates/Coordinates.h"
 #include "coordinates/Geohash.h"
-#include "commons/SensorController.h"
+#include "commons/SensorDataParser.h"
 
 static const QString g_mapDiv = "megamap";
 static const QString g_baseHtml = "<!DOCTYPE html>\n"
@@ -91,7 +91,8 @@ void MainWindow::btnRefresh_pressed() {
   QString srcCoordsStr = jsCoordsString(lstCoords, "src", "#FF0000");
   QString allCoordsStr = srcCoordsStr;
   geopoint_t p(42.87336, 74.61873);
-  if (!lstCoords.empty()) p = lstCoords[0];
+  if (!lstCoords.empty())
+    p = lstCoords[0];
   QString html = g_baseHtml.arg(g_mapDiv).arg(allCoordsStr).arg(p.Latitude).arg(p.Longitude);
   m_page->setHtml(html);
 }
