@@ -6,7 +6,7 @@
 
 #include "coordinates/Coordinates.h"
 #include "coordinates/Geohash.h"
-#include "commons/SensorDataParser.h"
+#include "commons/SensorDataController.h"
 
 static const QString g_mapDiv = "megamap";
 static const QString g_baseHtml = "<!DOCTYPE html>\n"
@@ -43,19 +43,23 @@ static QString jsCoordsString(const std::vector<geopoint_t>& lst,
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
-  ui(new Ui::MainWindow)
+  ui(new Ui::MainWindow),
+  m_sdc(nullptr)
 {
   ui->setupUi(this);  
   m_page = ui->m_webView->page();
+  m_sdc = new SensorDataController;
   connect(m_page, &QWebEnginePage::featurePermissionRequested,
           this, &MainWindow::pageFeaturePermissionRequested);
 
   connect(ui->m_btnRefresh, &QPushButton::pressed, this, &MainWindow::btnRefresh_pressed);
   connect(ui->m_btnSave, &QPushButton::pressed, this, &MainWindow::btnSave_pressed);
+  connect(ui->m_btnLoadData, &QPushButton::pressed, this, &MainWindow::btnLoadData_pressed);
 }
 ///////////////////////////////////////////////////////
 
 MainWindow::~MainWindow() {
+  if (m_sdc) delete m_sdc;
   delete ui;
 }
 ///////////////////////////////////////////////////////
@@ -84,10 +88,29 @@ void MainWindow::exportTraceToHtmlFile() {
 ///////////////////////////////////////////////////////
 
 void MainWindow::btnRefresh_pressed() {
+  QString dataFilePath = ui->m_tbInputFile->text();
+  if (dataFilePath.isEmpty()) {
+    QMessageBox msgBox(this);
+    msgBox.setText("Input file not specified");
+    msgBox.setWindowTitle("Warning");
+    msgBox.exec();
+    ui->m_tbInputFile->setFocus();
+    return;
+  }
+
   //!todo read from file.
   std::vector<geopoint_t> lstCoords;
+  m_sdc->reset();
+  if (m_sdc->readFile(dataFilePath.toStdString().c_str())) {
+    auto r = m_sdc->typeRange(SDT_GPS_DATA);
+    for (auto i = r.first; i != r.second; ++i) {
+      lstCoords.push_back(geopoint_t(i->data.gps.lat, i->data.gps.lon));
+    }
+  }
   qDebug() << "Src distance : " << CoordCaclulateDistance(lstCoords);
+
   //!todo filter with geohash JUST FOR DISPLAY! so need to set big precision.
+
   QString srcCoordsStr = jsCoordsString(lstCoords, "src", "#FF0000");
   QString allCoordsStr = srcCoordsStr;
   geopoint_t p(42.87336, 74.61873);
@@ -100,6 +123,14 @@ void MainWindow::btnRefresh_pressed() {
 
 void MainWindow::btnSave_pressed() {
   exportTraceToHtmlFile();
+}
+///////////////////////////////////////////////////////
+
+void MainWindow::btnLoadData_pressed() {
+  QString fs = QFileDialog::getOpenFileName(nullptr, "Open file with data", QString());
+  if (fs.isEmpty())
+    return;
+  ui->m_tbInputFile->setText(fs);
 }
 ///////////////////////////////////////////////////////
 

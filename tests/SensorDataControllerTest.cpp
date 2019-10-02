@@ -52,7 +52,18 @@ TEST (sensor_controller, by_type) {
     if (next.type != tv[i].type)
       continue;
     ASSERT_GE(next.timestamp, tv[i].timestamp);
-  }
+  }  
+
+  SensorData dummyLow(0, SDT_GPS_DATA);
+  SensorData dummyHig(UINT64_MAX, SDT_GPS_DATA);
+
+  sensor_data_storage_bytype_iter_t l = byType.lower_bound(dummyLow);
+  sensor_data_storage_bytype_iter_t r = byType.upper_bound(dummyHig);
+
+  std::cout << "*****************************************" << std::endl;
+  for (; l != r; ++l)
+    std::cout << l->type << std::endl;
+  std::cout << "*****************************************" << std::endl;
 }
 
 TEST (sensor_controller, read_file) {

@@ -5,6 +5,8 @@
 #include <QWebEnginePage>
 
 class QWebEnginePage;
+class SensorDataController;
+
 namespace Ui {
 class MainWindow;
 }
@@ -21,6 +23,7 @@ public:
 private:
   Ui::MainWindow *ui;
   QWebEnginePage *m_page;
+  SensorDataController *m_sdc;
 
 private slots:
   void pageFeaturePermissionRequested(const QUrl &securityOrigin, QWebEnginePage::Feature feature);
@@ -28,6 +31,7 @@ private slots:
 
   void btnRefresh_pressed();
   void btnSave_pressed();
+  void btnLoadData_pressed();
 };
 
 #endif // MAINWINDOW_H

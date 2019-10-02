@@ -39,7 +39,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="m_btnInputFile">
+   <widget class="QPushButton" name="m_btnLoadData">
     <property name="geometry">
      <rect>
       <x>1120</x>

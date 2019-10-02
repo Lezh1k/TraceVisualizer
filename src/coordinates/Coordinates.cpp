@@ -35,8 +35,8 @@ static double geoDistanceMeters(double lon1, double lat1,
 #else
 
 
-  double f1 = Degree2Rad(lat1), l1 = Degree2Rad(lon1);
-  double f2 = Degree2Rad(lat2), l2 = Degree2Rad(lon2);
+  double f1 = degree2rad(lat1), l1 = degree2rad(lon1);
+  double f2 = degree2rad(lat2), l2 = degree2rad(lon2);
   double L = l2 - l1;
   double tanU1 = (1-flattening) * tan(f1);
   double cosU1 = 1 / sqrt((1.0 + tanU1*tanU1));
@@ -119,9 +119,9 @@ static geopoint_t getPointAhead(geopoint_t point,
   res.Longitude = Rad2Degree(lng2);
   return res;
 #else
-  double t1 = Degree2Rad(point.Latitude);
-  double l1 = Degree2Rad(point.Longitude);
-  double a1 = Degree2Rad(azimuthDegrees);
+  double t1 = degree2rad(point.Latitude);
+  double l1 = degree2rad(point.Longitude);
+  double a1 = degree2rad(azimuthDegrees);
   double sina1 = sin(a1);
   double cosa1 = cos(a1);
 
@@ -160,9 +160,9 @@ static geopoint_t getPointAhead(geopoint_t point,
   double l2 = fmod((l1+L+3*M_PI) , (2*M_PI)) - M_PI;  // normalise to -180..+180
 
   geopoint_t res;
-  res.Latitude = Rad2Degree(atan2(sinU1*cosSig + cosU1*sinSig*cosa1,
+  res.Latitude = rad2degree(atan2(sinU1*cosSig + cosU1*sinSig*cosa1,
                                  (1-flattening)*sqrt(sina*sina + x*x)));
-  res.Longitude = Rad2Degree(l2);
+  res.Longitude = rad2degree(l2);
   return res;
 #endif
 }

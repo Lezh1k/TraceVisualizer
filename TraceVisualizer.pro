@@ -6,6 +6,7 @@ INCLUDEPATH += include \
                tests/include
 
 HEADERS += \
+    include/commons/SensorData.h \
     include/commons/SensorDataController.h \
     include/commons/SensorDataParser.h \
     include/coordinates/Coordinates.h \
@@ -35,7 +36,8 @@ SOURCES += \
     tests/SensorDataParserTest.cpp
 
 LIBS += -lgtest
-#LIBS += -ltcmalloc
 
 FORMS += \
     forms/mainwindow.ui
+
+test:DEFINES += TESTMODE

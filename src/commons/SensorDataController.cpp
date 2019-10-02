@@ -2,6 +2,7 @@
 #include "commons/Commons.h"
 #include <cstring>
 #include <stdio.h>
+#include <utility>
 
 bool SensorDataController::addLine(char *str) {
 static const int TAGLEN = 9;
@@ -28,9 +29,9 @@ bool SensorDataController::readFile(const char *path) {
   FILE* fp = fopen(path, "r");
   if (!fp)
     return false;
-  Defer deferFile(std::bind(fclose, fp)); //[fp]() { fclose(fp); }
-  char *line = static_cast<char*>(malloc(256));
-  Defer deferLine(std::bind(free, line));
+  Defer deferFile([fp](){fclose(fp);});
+  char *line = new char[256];
+  Defer deferLine([line](){delete[] line;});
   bool res = true;
   size_t len = 0;
   while ((getline(&line, &len, fp)) != -1)
@@ -44,12 +45,21 @@ void SensorDataController::reset() {
 }
 ///////////////////////////////////////////////////////
 
-const SensorDataController::storage_bytime_t &SensorDataController::storageByTime() const {
+std::pair<sensor_data_storage_bytype_iter_t, sensor_data_storage_bytype_iter_t> SensorDataController::typeRange(SensorDataType sdt) {
+  SensorData dummyLow(0, sdt);
+  SensorData dummyHig(UINT64_MAX, sdt);
+  sensor_data_storage_bytype_iter_t l = storageByType().lower_bound(dummyLow);
+  sensor_data_storage_bytype_iter_t r = storageByType().upper_bound(dummyHig);
+  return std::make_pair(l, r);
+}
+///////////////////////////////////////////////////////
+
+const sensor_data_storage_bytime_t &SensorDataController::storageByTime() const {
   return m_data.get<SensorData::ByTime>();
 }
 ///////////////////////////////////////////////////////
 
-const SensorDataController::storage_bytype_t &SensorDataController::storageByType() const {
+const sensor_data_storage_bytype_t &SensorDataController::storageByType() const {
   return m_data.get<SensorData::ByType>();
 }
 ///////////////////////////////////////////////////////
